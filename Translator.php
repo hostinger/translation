@@ -438,4 +438,14 @@ EOF
 
         return $this->configCacheFactory;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addMissingTranslationCallback(callable $callback)
+    {
+        foreach($this->getFallbackLocales() as $locale){
+            $this->getCatalogue($locale)->addMissingTranslationCallback($callback);
+        }
+    }
 }
