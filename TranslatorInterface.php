@@ -62,4 +62,12 @@ interface TranslatorInterface
      * @return string The locale
      */
     public function getLocale();
+
+
+    /**
+     * Calls the specified callback if a translation that is not yet defined in translation file has been encountered.
+     *
+     * @param callable $callback
+     */
+    public function addMissingTranslationCallback(callable $callback);
 }

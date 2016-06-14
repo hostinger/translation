@@ -139,4 +139,11 @@ interface MessageCatalogueInterface
      * @param ResourceInterface $resource A resource instance
      */
     public function addResource(ResourceInterface $resource);
+
+    /**
+     * Sets a closure that will be called once a missing translation is encountered.
+     *
+     * @param callable $callback
+     */
+    public function addMissingTranslationCallback(callable $callback);
 }
