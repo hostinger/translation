@@ -26,7 +26,7 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
     private $locale;
     private $fallbackCatalogue;
     private $parent;
-    private $callbacks = [];
+    private $missingTranslationCallback;
 
     /**
      * Constructor.
@@ -113,8 +113,8 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
             return $this->fallbackCatalogue->get($id, $domain);
         }
 
-        if(isset($this->callbacks['missingTranslation']) && is_callable($this->callbacks['missingTranslation'])){
-            $this->callbacks['missingTranslation']($id,$this->locale);
+        if(is_callable($this->missingTranslationCallback)){
+            call_user_func($this->missingTranslationCallback,$id,$this->locale);
         }
 
         return $id;
@@ -278,6 +278,6 @@ class MessageCatalogue implements MessageCatalogueInterface, MetadataAwareInterf
      */
     public function addMissingTranslationCallback(callable $callback)
     {
-        $this->callbacks['missingTranslation'] = $callback;
+        $this->missingTranslationCallback = $callback;
     }
 }
