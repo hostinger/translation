@@ -70,6 +70,11 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
     private $configCacheFactory;
 
     /**
+     * @var callable
+     */
+    private $missingTranslationCallback;
+
+    /**
      * Constructor.
      *
      * @param string               $locale   The locale
@@ -384,6 +389,7 @@ EOF
             }
 
             $fallbackCatalogue = new MessageCatalogue($fallback, $this->catalogues[$fallback]->all());
+            $fallbackCatalogue->addMissingTranslationCallback($this->missingTranslationCallback);
             foreach ($this->catalogues[$fallback]->getResources() as $resource) {
                 $fallbackCatalogue->addResource($resource);
             }
@@ -444,8 +450,10 @@ EOF
      */
     public function addMissingTranslationCallback(callable $callback)
     {
+        $this->missingTranslationCallback = $callback;
+
         foreach($this->getFallbackLocales() as $locale){
-            $this->getCatalogue($locale)->addMissingTranslationCallback($callback);
+            $this->getCatalogue($locale)->addMissingTranslationCallback($this->missingTranslationCallback);
         }
     }
 }
