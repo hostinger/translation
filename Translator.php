@@ -195,6 +195,9 @@ class Translator implements TranslatorInterface, TranslatorBagInterface
             $domain = 'messages';
         }
 
+        // Remove all whitespace
+        $id = preg_replace('/\s+/', ' ', $id);
+
         return strtr($this->getCatalogue($locale)->get((string) $id, $domain), $parameters);
     }
 
